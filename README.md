@@ -9,6 +9,7 @@ Documentation for adding TALA single sign-on to a project.
 | [recipes/fastapi](recipes/fastapi/README.md) | Copy-in TALA SSO module for FastAPI backends, with tests. |
 | [skills/tala-sso/SKILL.md](skills/tala-sso/SKILL.md) | Agent skill: detect the stack, apply the SDK or recipe, run the contract checklist. |
 | [conformance/check_tala_sso.py](conformance/check_tala_sso.py) | Black-box check of an app's SSO endpoints against the contract (stdlib only, never logs in). |
+| [AGENTS.md](AGENTS.md) | Entry point for AI coding agents (Codex, Claude Code, etc.). |
 
 ## The SDK repositories (private)
 
