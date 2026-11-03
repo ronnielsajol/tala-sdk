@@ -152,6 +152,13 @@ one key to `github.com`, the second key is given an alias (this is why `INSIGHT`
 
 ### D1. Server (Hostinger and similar)
 
+> **Already done (as of 2026-10-28):** the deploy key, the `github.com-sso-laravel` alias in
+> `~/.ssh/config` and the `ssh -T` test are already set up on **GoDaddy** (shared by
+> `timeline-app`, `survey-asc` and `INSIGHT`) and on **Hostinger** (`ask-nest`). For a new app on
+> either server, skip the numbered steps below and only do **A** and **B** (alias URL in
+> `composer.json`, regenerated and committed `composer.lock`). A new server, or a different
+> server user, needs the full steps.
+
 1. Log in to the server and create a key for `sso-laravel` only:
    ```bash
    ssh-keygen -t ed25519 -C "<device-name>" -f ~/.ssh/sso_laravel_deploy -N ""
