@@ -52,7 +52,11 @@ Ask only for what you cannot read from the project:
 
 ## 3. Apply
 
-**Laravel:** add the `vcs` repository with the SSH URL, `composer require tala/sso-laravel`,
+**Laravel:** add the `vcs` repository with the SSH URL, `composer require tala/sso-laravel`.
+If the app deploys by running `composer install` on a server, the URL must use the server's SSH
+alias (`git@github.com-sso-laravel:<owner>/sso-laravel.git`), and `composer.lock` must be
+regenerated with `composer update tala/sso-laravel --no-scripts` and committed; check with
+`grep -n "github.com-sso-laravel" composer.lock` (see `private-repo-access.md`, D1). Then
 publish the config, write the login handler keyed on a `tala_id` column (nullable, unique;
 backfill existing users by email once, after a database backup), set the env vars, and make
 sure the cache driver is shared and not `array`. Add the logout resolver if the app has logout.

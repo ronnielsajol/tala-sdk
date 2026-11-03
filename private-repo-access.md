@@ -168,15 +168,37 @@ one key to `github.com`, the second key is given an alias (this is why `INSIGHT`
        IdentityFile ~/.ssh/sso_laravel_deploy
        IdentitiesOnly yes
    ```
-5. In that app's `composer.json`, the repository URL must use the alias:
-   `git@github.com-sso-laravel:ronnielsajol/sso-laravel.git`
-   (the alias lets the server pick the right key; your laptop needs the same alias or a
-   `Host github.com-sso-laravel` entry in its own `~/.ssh/config`).
-6. Test on the server: `ssh -T git@github.com-sso-laravel`
+5. Test on the server: `ssh -T git@github.com-sso-laravel`
 
-Do this once **per server**, not per app. If several apps run on the same server (for example
-`ask-nest`, `timeline-app` and `survey-asc` on one host), they all share this one key and alias,
-as long as each app's `composer.json` uses the alias URL from step 5.
+Do the steps above once **per server** (and per server user), not per app. Then **each app** on
+that server needs the two changes below. Do them on your laptop, not on the server.
+
+**A. `composer.json` must use the alias URL** (this is what makes the server pick the deploy key):
+```json
+"repositories": [
+    {
+        "type": "vcs",
+        "url": "git@github.com-sso-laravel:<owner>/sso-laravel.git"
+    }
+]
+```
+Your laptop needs the same `Host github.com-sso-laravel` entry in its own `~/.ssh/config`
+pointing at your personal key.
+
+**B. `composer.lock` must be regenerated and committed.** The lock file records where the package
+came from. If it still has the old URL, the server ignores the alias and asks for a GitHub token.
+```bash
+composer update tala/sso-laravel --no-scripts
+```
+Check the result, then commit `composer.json` and `composer.lock` together:
+```bash
+grep -n "github.com-sso-laravel" composer.lock
+```
+It should show your alias URL under the `tala/sso-laravel` package. No output means the lock
+still has the old URL; run the update again.
+
+If several apps run on the same server (for example `ask-nest`, `timeline-app` and `survey-asc`
+on one host), they all share this one key and alias, as long as each app does A and B.
 
 **GitHub Actions caveat:** the alias only exists where you create it. On GitHub's test machine
 (D2) it does not, so a `composer.json` with `git@github.com-sso-laravel:` fails there. Add this

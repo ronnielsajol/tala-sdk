@@ -55,6 +55,12 @@ Then run:
 composer require tala/sso-laravel
 ```
 
+**If the app deploys by running `composer install` on a server**, the URL above is not enough. The
+server uses a deploy key through an SSH alias, so `composer.json` must use
+`git@github.com-sso-laravel:<owner>/sso-laravel.git`, and `composer.lock` must be regenerated with
+`composer update tala/sso-laravel --no-scripts` and committed. See section D1 of
+[private-repo-access.md](private-repo-access.md) for the server setup and a check command.
+
 ### Configuration
 Publish the config file:
 ```bash
